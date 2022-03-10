@@ -1,0 +1,92 @@
+
+CREATE TABLE IF NOT EXISTS departments ( 
+DEPARTMENT_ID integer NOT NULL UNIQUE, 
+DEPARTMENT_NAME varchar(30) NOT NULL, 
+MANAGER_ID integer DEFAULT NULL, 
+LOCATION_ID integer DEFAULT NULL, 
+PRIMARY KEY (DEPARTMENT_ID) 
+)ENGINE=InnoDB;
+
+
+INSERT INTO departments VALUES(60,'SALES',201,89);
+INSERT INTO departments VALUES(61,'ACCOUNTS',201,89);
+
+
+mysql> SELECT * FROM departments;
++---------------+-----------------+------------+-------------+
+| DEPARTMENT_ID | DEPARTMENT_NAME | MANAGER_ID | LOCATION_ID |
++---------------+-----------------+------------+-------------+
+|            60 | SALES           |        201 |          89 |
+|            61 | ACCOUNTS        |        201 |          89 |
++---------------+-----------------+------------+-------------+
+2 rows in set (0.00 sec)
+
+Sample table jobs.
+
+CREATE TABLE IF NOT EXISTS jobs ( 
+JOB_ID integer NOT NULL UNIQUE PRIMARY KEY, 
+JOB_TITLE varchar(35) NOT NULL DEFAULT ' ', 
+MIN_SALARY decimal(6,0) DEFAULT 8000, 
+MAX_SALARY decimal(6,0) DEFAULT 20000
+)ENGINE=InnoDB;
+
+
+INSERT INTO jobs(JOB_ID,JOB_TITLE) VALUES(1001,'OFFICER');
+INSERT INTO jobs(JOB_ID,JOB_TITLE) VALUES(1002,'CLERK');
+
+mysql> SELECT * FROM jobs;
++--------+-----------+------------+------------+
+| JOB_ID | JOB_TITLE | MIN_SALARY | MAX_SALARY |
++--------+-----------+------------+------------+
+|   1001 | OFFICER   |       8000 |      20000 |
+|   1002 | CLERK     |       8000 |      20000 |
++--------+-----------+------------+------------+
+2 rows in set (0.00 sec)
+
+
+Sample table employees.
+
+CREATE TABLE IF NOT EXISTS employees ( 
+EMPLOYEE_ID integer NOT NULL PRIMARY KEY, 
+FIRST_NAME varchar(20) DEFAULT NULL, 
+LAST_NAME varchar(25) NOT NULL, 
+DEPARTMENT_ID integer DEFAULT NULL, 
+FOREIGN KEY(DEPARTMENT_ID) 
+REFERENCES  departments(DEPARTMENT_ID),
+JOB_ID integer NOT NULL, 
+FOREIGN KEY(JOB_ID) 
+REFERENCES  jobs(JOB_ID),
+SALARY decimal(8,2) DEFAULT NULL
+)ENGINE=InnoDB;
+Now insert the rows into the table employees.
+
+Sample Solution:
+
+INSERT INTO employees VALUES(510,'Alex','Hanes',60,1001,18000);
+Let execute the above code in MySQL 5.6 command prompt.
+
+Here is the structure of the table:
+
+mysql> SELECT * FROM employees;
++-------------+------------+-----------+---------------+--------+----------+
+| EMPLOYEE_ID | FIRST_NAME | LAST_NAME | DEPARTMENT_ID | JOB_ID | SALARY   |
++-------------+------------+-----------+---------------+--------+----------+
+|         510 | Alex       | Hanes     |            60 |   1001 | 18000.00 |
++-------------+------------+-----------+---------------+--------+----------+
+1 row in set (0.00 sec)
+Here in the above insert statement the child column department_id and job_id of child table employees are successfully referencing with the department_id and job_id column of parent tables departments and jobs respectively, so no problem have been arisen to the insertion.
+
+Now insert another row in the employees table.
+
+INSERT INTO employees VALUES(511,'Tom','Elan',60,1003,22000);
+Let execute the above code in MySQL 5.6 command prompt.
+
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`hrr`.`employees`, CONSTRAINT `employees_ibfk_2` FORE
+OB_ID`) REFERENCES `jobs` (`JOB_ID`))
+Here in the above insert statement show that, within child columns department_id and job_id of child table employees, the department_id are successfully referencing with the department_id of parent table departments but job_id column are not successfully referencing with the job_id of parent table jobs, so the problem have been arisen to the insertion displayed an error message.
+
+Now insert another row in the employees table.
+
+INSERT INTO employees VALUES(511,'Tom','Elan',80,1001,22000);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`hrr`.`employees`, CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`J
+OB_ID`) REFERENCES `jobs` (`JOB_ID`))
