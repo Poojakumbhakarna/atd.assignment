@@ -1,0 +1,28 @@
+public static void main(String[] args)
+{
+     List colour = new LinkedList();
+    colour.add("Red");
+    colour.add("Green");
+    colour.add("Black");
+    colour.add("White");
+    colour.add("Pink");
+    System.out.println("Display all elements");
+    Iterator listItr = colour.iterator();
+    while (listItr.hasNext()){
+        System.out.println(listItr.next());
+    }
+    colour.add(0,"Purple");
+    System.out.println("\n");
+    System.out.println("Display after enter \"purple\"");
+    listItr = colour.iterator();
+    while (listItr.hasNext()){
+        System.out.println(listItr.next());
+    }
+    colour.remove("White");
+    System.out.println("\n");
+    System.out.println("Display after remove \"white\"");
+    listItr = colour.iterator();
+    while (listItr.hasNext()){
+        System.out.println(listItr.next());
+    }
+}
