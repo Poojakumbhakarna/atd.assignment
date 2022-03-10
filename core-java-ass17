@@ -1,0 +1,20 @@
+public int luckySum(int a, int b, int c)
+{
+02
+  if (a == 13)
+03
+    return 0;
+04
+  else if (b == 13)
+05
+    return a;
+06
+  else if (c == 13)
+07
+    return a + b;
+08
+  else
+09
+    return a + b +c;
+10
+}
